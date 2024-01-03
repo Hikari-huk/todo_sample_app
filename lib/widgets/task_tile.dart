@@ -4,28 +4,38 @@ class TaskTile extends StatelessWidget {
   final bool isChecked;
   final String taskTitle;
   final Function(bool?) checkboxCallback;
-  final Function() longPressCallback;
+  final Function(DismissDirection) deleteCallback;
 
   TaskTile({
     required this.taskTitle,
     required this.isChecked,
     required this.checkboxCallback,
-    required this.longPressCallback,
+    required this.deleteCallback,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        onLongPress: longPressCallback,
-        title: Text(
-          taskTitle,
-          style: TextStyle(
-              decoration: isChecked ? TextDecoration.lineThrough : null),
+    return Dismissible(
+      key: Key(taskTitle),
+      onDismissed: deleteCallback,
+      background: Container(
+        color: Colors.red,
+        child: const Align(
+          alignment: Alignment(0.8, 0.0),
+          child: Icon(Icons.delete),
         ),
-        trailing: Checkbox(
-          activeColor: Colors.lightBlueAccent,
-          value: isChecked,
-          onChanged: checkboxCallback,
-        ));
+      ),
+      child: ListTile(
+          title: Text(
+            taskTitle,
+            style: TextStyle(
+                decoration: isChecked ? TextDecoration.lineThrough : null),
+          ),
+          trailing: Checkbox(
+            activeColor: Colors.lightBlueAccent,
+            value: isChecked,
+            onChanged: checkboxCallback,
+          )),
+    );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_sample_app/models/tasks_data.dart';
+import 'package:todo_sample_app/database/database_helper.dart';
+import 'package:todo_sample_app/models/tasks_provider.dart';
 
 import '../widgets/tasks_list.dart';
 import 'add_task_screen.dart';
 
 class TasksScreen extends StatelessWidget {
+  final databases = DatabaseHelper.instance.database;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -51,7 +53,7 @@ class TasksScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${Provider.of<TaskData>(context).taskCount} Tasks',
+                  '${Provider.of<TaskProvider>(context).taskCount} Tasks',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,

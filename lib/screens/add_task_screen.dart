@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_sample_app/models/tasks_data.dart';
+import 'package:todo_sample_app/models/tasks_provider.dart';
 
 class AddTaskScreen extends StatelessWidget {
   TextEditingController textEditingController = TextEditingController();
@@ -36,9 +36,8 @@ class AddTaskScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Provider.of<TaskData>(context, listen: false)
+                Provider.of<TaskProvider>(context, listen: false)
                     .addTask(textEditingController.text);
-
                 Navigator.pop(context);
               },
               child: Text('Add'),

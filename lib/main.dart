@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_sample_app/models/tasks_data.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todo_sample_app/database/database_helper.dart';
+import 'package:todo_sample_app/models/tasks_provider.dart';
 import 'package:todo_sample_app/screens/tasks_screen.dart';
 
 void main() {
@@ -10,19 +12,36 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => TaskData(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: TasksScreen(),
-      ),
+    return FutureBuilder<Database>(
+      future: DatabaseHelper.instance.database, // 非同期処理
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          // データベースの初期化が完了したらプロバイダを提供
+          return ChangeNotifierProvider(
+            create: (_) => TaskProvider(database: snapshot.data!),
+            child: MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+              home: TasksScreen(),
+            ),
+          );
+        } else {
+          // データベースの初期化中またはエラーが発生した場合
+          return MaterialApp(
+            home: Scaffold(
+              body: snapshot.hasError
+                  ? Text('Error: ${snapshot.error}')
+                  : CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 }
