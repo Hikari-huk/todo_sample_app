@@ -14,9 +14,7 @@ class TaskProvider extends ChangeNotifier {
 
   UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
 
-  int get taskCount {
-    return _tasks.length;
-  }
+  int get taskCount => _tasks.length;
 
   // データベースからタスクをロードする
   Future<void> loadTasks() async {

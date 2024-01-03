@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TaskTile extends StatelessWidget {
   final bool isChecked;
   final String taskTitle;
+  final String createdAt;
   final Function(bool?) checkboxCallback;
   final Function(DismissDirection) deleteCallback;
 
   TaskTile({
     required this.taskTitle,
     required this.isChecked,
+    required this.createdAt,
     required this.checkboxCallback,
     required this.deleteCallback,
   });
@@ -26,10 +29,21 @@ class TaskTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-          title: Text(
-            taskTitle,
-            style: TextStyle(
-                decoration: isChecked ? TextDecoration.lineThrough : null),
+          title: Column(
+            children: [
+              Text(
+                taskTitle,
+                style: TextStyle(
+                    decoration: isChecked ? TextDecoration.lineThrough : null),
+              ),
+              Text(
+                DateFormat('yyyy/MM/dd HH:mm').format(
+                  DateTime.parse(createdAt),
+                ),
+                style: TextStyle(
+                    decoration: isChecked ? TextDecoration.lineThrough : null),
+              )
+            ],
           ),
           trailing: Checkbox(
             activeColor: Colors.lightBlueAccent,
