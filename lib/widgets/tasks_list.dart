@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_sample_app/models/tasks_provider.dart';
+import 'package:todo_sample_app/providers/tasks_provider.dart';
 import 'package:todo_sample_app/widgets/task_tile.dart';
 
 class TasksList extends StatelessWidget {
